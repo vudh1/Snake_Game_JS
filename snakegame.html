@@ -25,14 +25,19 @@
 	const snakeboard_ctx = snakeboard.getContext("2d");
 
 	let snake = [{x : 300, y : 300},{x: 290, y:300},{x: 280, y:300},{x: 270, y:300},{x: 260, y:300},{x: 250, y:300}]
-
+	let dx = 10;
+	let dy = 0;
 
 	main();
 
 	function main(){
-		clearCanvas();
-		drawSnake();
-
+		setTimeout(function onTick()
+		{
+			clearCanvas();
+			moveSnake();
+			drawSnake();
+			main();
+		}, 100)
 	}
 
 	function clearCanvas(){
@@ -53,6 +58,13 @@
 	function drawSnake()
 	{
 		snake.forEach(drawSnakePart);
+	}
+
+	function moveSnake()
+	{
+		const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+		snake.unshift(head);
+		snake.pop();
 	}
 </script>
 
