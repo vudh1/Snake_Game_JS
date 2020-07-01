@@ -4,11 +4,17 @@
     const snake_border = 'darkblue';
 
     let snake = [
-      {x: 200, y: 200},
-      {x: 190, y: 200},
-      {x: 180, y: 200},
-      {x: 170, y: 200},
-      {x: 160, y: 200}
+      {x: 400, y: 400},
+      {x: 380, y: 400},
+      {x: 360, y: 400},
+      {x: 340, y: 400},
+      {x: 320, y: 400},
+      {x: 300, y: 400},
+      {x: 280, y: 400},
+      {x: 260, y: 400},
+      {x: 240, y: 400},
+      {x: 220, y: 400},
+      {x: 200, y: 400},
     ]
 
     let score = 0;
@@ -17,10 +23,11 @@
     // Horizontal velocity
     let foodX;
     let foodY;
-    let dx = 10;
+    let dx = 20;
     // Vertical velocity
     let dy = 0;
 
+    let tempo = 100;
 
     // Get the canvas element
     const snakeboard = document.getElementById("snakeboard");
@@ -28,6 +35,8 @@
     const snakeboard_ctx = snakeboard.getContext("2d");
     // Start game
     main();
+
+    // increaseTempo();
 
     generateFood();
 
@@ -46,7 +55,7 @@
         drawSnake();
         // Repeat
         main();
-      }, 100)
+      }, tempo);
     }
 
     // draw a border around the canvas
@@ -70,8 +79,8 @@
     function drawFood() {
       snakeboard_ctx.fillStyle = 'lightgreen';
       snakeboard_ctx.strokestyle = 'darkgreen';
-      snakeboard_ctx.fillRect(foodX, foodY, 10, 10);
-      snakeboard_ctx.strokeRect(foodX, foodY, 10, 10);
+      snakeboard_ctx.fillRect(foodX, foodY, 20, 20);
+      snakeboard_ctx.strokeRect(foodX, foodY, 20, 20);
     }
 
     // Draw one snake part
@@ -83,31 +92,55 @@
       snakeboard_ctx.strokestyle = snake_border;
       // Draw a "filled" rectangle to represent the snake part at the coordinates
       // the part is located
-      snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+      snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 20, 20);
       // Draw a border around the snake part
-      snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+      snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 20, 20);
     }
 
     function gameEnded() {
       for (let i = 4; i < snake.length; i++) {
         if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
       }
-      const hitLeftWall = snake[0].x < 0;
-      const hitRightWall = snake[0].x > snakeboard.width - 10;
-      const hitToptWall = snake[0].y < 0;
-      const hitBottomWall = snake[0].y > snakeboard.height - 10;
-      return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall
+
+      hitBorder();
+
+      return false;
     }
 
+    function hitBorder(){
+    // hit left border
+      if (snake[0].x < 0)
+      {
+         snake[0].x = snakeboard.width - 20;
+      }
+
+      // hit right border
+      if(snake[0].x > snakeboard.width)
+      {
+       snake[0].x = 0;
+      }
+
+      //hit up border
+      if(snake[0].y < 0)
+      {
+        snake[0].y = snakeboard.height - 20;
+      }
+
+      if(snake[0].y > snakeboard.height)
+      {
+       snake[0].y = 0
+      }
+  }
+
     function randomFood(min, max) {
-      return Math.round((Math.random() * (max-min) + min) / 10) * 10;
+      return Math.round((Math.random() * (max-min) + min) / 20) * 20;
     }
 
     function generateFood() {
       // Generate a random number the food x-coordinate
-      foodX = randomFood(0, snakeboard.width - 10);
+      foodX = randomFood(20, snakeboard.width - 40);
       // Generate a random number for the food y-coordinate
-      foodY = randomFood(0, snakeboard.height - 10);
+      foodY = randomFood(20, snakeboard.height - 40);
       // if the new food location is where the snake currently is, generate a new food location
       snake.forEach(function snakeHasEatenFood(part) {
         const has_eaten = part.x == foodX && part.y == foodY;
@@ -126,25 +159,25 @@
       if (changing_direction) return;
       changing_direction = true;
       const keyPressed = event.keyCode;
-      const goingUp = dy === -10;
-      const goingDown = dy === 10;
-      const goingRight = dx === 10;
-      const goingLeft = dx === -10;
+      const goingUp = dy === -20;
+      const goingDown = dy === 20;
+      const goingRight = dx === 20;
+      const goingLeft = dx === -20;
       if (keyPressed === LEFT_KEY && !goingRight) {
-        dx = -10;
+        dx = -20;
         dy = 0;
       }
       if (keyPressed === UP_KEY && !goingDown) {
         dx = 0;
-        dy = -10;
+        dy = -20;
       }
       if (keyPressed === RIGHT_KEY && !goingLeft) {
-        dx = 10;
+        dx = 20;
         dy = 0;
       }
       if (keyPressed === DOWN_KEY && !goingUp) {
         dx = 0;
-        dy = 10;
+        dy = 20;
       }
     }
 
@@ -157,6 +190,9 @@
       if (has_eaten_food) {
         // Increase score
         score += 10;
+
+        tempo = Math.ceil(tempo * 0.95);
+
         // Display score on screen
         document.getElementById('score').innerHTML = score;
         // Generate new food location
