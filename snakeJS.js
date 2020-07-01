@@ -99,7 +99,7 @@
 
     function gameEnded() {
       for (let i = 4; i < snake.length; i++) {
-        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
       }
 
       hitBorder();
