@@ -1,20 +1,20 @@
     const board_border = 'black';
     const board_background = 'white';
     const snake_col = 'lightblue';
-    const snake_border = 'darkblue';
+    const snake_border = 'lightblue';
 
     let snake = [
-      {x: 400, y: 400},
-      {x: 380, y: 400},
-      {x: 360, y: 400},
-      {x: 340, y: 400},
-      {x: 320, y: 400},
-      {x: 300, y: 400},
-      {x: 280, y: 400},
-      {x: 260, y: 400},
-      {x: 240, y: 400},
-      {x: 220, y: 400},
-      {x: 200, y: 400},
+    {x: 400, y: 400},
+    {x: 380, y: 400},
+    {x: 360, y: 400},
+    {x: 340, y: 400},
+    {x: 320, y: 400},
+    {x: 300, y: 400},
+    {x: 280, y: 400},
+    {x: 260, y: 400},
+    {x: 240, y: 400},
+    {x: 220, y: 400},
+    {x: 200, y: 400},
     ]
 
     let score = 0;
@@ -45,10 +45,10 @@
     // main function called repeatedly to keep the game running
     function main() {
 
-        if (gameEnded()) return;
+      if (gameEnded()) return;
 
-        changing_direction = false;
-        setTimeout(function onTick() {
+      changing_direction = false;
+      setTimeout(function onTick() {
         clearCanvas();
         drawFood();
         moveSnake();
@@ -107,17 +107,19 @@
       return false;
     }
 
+
+
     function hitBorder(){
     // hit left border
-      if (snake[0].x < 0)
-      {
-         snake[0].x = snakeboard.width - 20;
-      }
+    if (snake[0].x < 0)
+    {
+      snake[0].x = snakeboard.width - 20;
+    }
 
       // hit right border
       if(snake[0].x > snakeboard.width)
       {
-       snake[0].x = 0;
+        snake[0].x = 0;
       }
 
       //hit up border
@@ -128,9 +130,9 @@
 
       if(snake[0].y > snakeboard.height)
       {
-       snake[0].y = 0
+        snake[0].y = 0
       }
-  }
+    }
 
     function randomFood(min, max) {
       return Math.round((Math.random() * (max-min) + min) / 20) * 20;
@@ -156,34 +158,37 @@
 
     // Prevent the snake from reversing
 
-      if (changing_direction) return;
-      changing_direction = true;
-      const keyPressed = event.keyCode;
-      const goingUp = dy === -20;
-      const goingDown = dy === 20;
-      const goingRight = dx === 20;
-      const goingLeft = dx === -20;
-      if (keyPressed === LEFT_KEY && !goingRight) {
-        dx = -20;
-        dy = 0;
-      }
-      if (keyPressed === UP_KEY && !goingDown) {
-        dx = 0;
-        dy = -20;
-      }
-      if (keyPressed === RIGHT_KEY && !goingLeft) {
-        dx = 20;
-        dy = 0;
-      }
-      if (keyPressed === DOWN_KEY && !goingUp) {
-        dx = 0;
-        dy = 20;
-      }
+    if (changing_direction) return;
+    changing_direction = true;
+    const keyPressed = event.keyCode;
+    const goingUp = dy === -20;
+    const goingDown = dy === 20;
+    const goingRight = dx === 20;
+    const goingLeft = dx === -20;
+    if (keyPressed === LEFT_KEY && !goingRight) {
+      dx = -20;
+      dy = 0;
     }
+    if (keyPressed === UP_KEY && !goingDown) {
+      dx = 0;
+      dy = -20;
+    }
+    if (keyPressed === RIGHT_KEY && !goingLeft) {
+      dx = 20;
+      dy = 0;
+    }
+    if (keyPressed === DOWN_KEY && !goingUp) {
+      dx = 0;
+      dy = 20;
+    }
+  }
 
-    function moveSnake() {
+  function moveSnake() {
+
+    diffs = dfs();
+
       // Create the new Snake's head
-      const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+      const head = {x: snake[0].x + diffs[0], y: snake[0].y + diffs[1]};
       // Add the new head to the beginning of snake body
       snake.unshift(head);
       const has_eaten_food = snake[0].x === foodX && snake[0].y === foodY;
@@ -202,3 +207,49 @@
         snake.pop();
       }
     }
+
+    function distance(coordinate1, coordinate2){
+      return Math.sqrt((coordinate1[0] - coordinate2[0])**2 + (coordinate1[1] - coordinate2[1])**2);
+    }
+
+    function validNeighbors(coordinate){
+      for(let i = 0; i < snake.length; i++){
+        if(snake[i].x == coordinate[0] && snake[i].y == coordinate[1]){
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function dfs(){
+      snakeX = snake[0].x;
+      snakeY = snake[0].y;
+
+      neighbors = [];
+
+      defaultNeighbors = [[snakeX-1,snakeY],[snakeX+1,snakeY], [snakeX,snakeY-1], [snakeX,snakeY+1]];
+
+      minNeigbor = 0;
+
+      min = Number.MAX_VALUE;
+
+      for(let i = 0; i < 4; i++){
+        if(validNeighbors(defaultNeighbors[i])){
+          neighbors.push(defaultNeighbors[i]);
+        }
+      }
+
+      for(let i = 0; i < neighbors.length; i++){
+        d = distance(neighbors[i],[foodX,foodY]);
+        if (d < min){
+          min = d;
+          minNeigbor = i;
+        }
+      }
+
+
+      directionDiffs = [[-20,0],[20,0],[0,-20],[0,20]];
+
+      return directionDiffs[minNeigbor];
+    }
+
