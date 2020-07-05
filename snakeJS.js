@@ -196,7 +196,7 @@
         // Increase score
         score += 10;
 
-        tempo = Math.ceil(tempo * 0.95);
+        tempo = Math.ceil(tempo * 0.75);
 
         // Display score on screen
         document.getElementById('score').innerHTML = score;
@@ -212,9 +212,9 @@
       return Math.sqrt((coordinate1[0] - coordinate2[0])**2 + (coordinate1[1] - coordinate2[1])**2);
     }
 
-    function validNeighbors(coordinate){
+    function validHead(newSnakeHeadX, newSnakeHeadY){
       for(let i = 0; i < snake.length; i++){
-        if(snake[i].x == coordinate[0] && snake[i].y == coordinate[1]){
+        if(snake[i].x == newSnakeHeadX && snake[i].y == newSnakeHeadY){
           return false;
         }
       }
@@ -227,29 +227,24 @@
 
       neighbors = [];
 
-      defaultNeighbors = [[snakeX-1,snakeY],[snakeX+1,snakeY], [snakeX,snakeY-1], [snakeX,snakeY+1]];
-
-      minNeigbor = 0;
+      defaultDirs = [[-20,0],[20,0],[0,-20],[0,20]];
 
       min = Number.MAX_VALUE;
+      minDirection = 0;
 
-      for(let i = 0; i < 4; i++){
-        if(validNeighbors(defaultNeighbors[i])){
-          neighbors.push(defaultNeighbors[i]);
+      for(var i = 0; i < defaultDirs.length; i++){
+        newSnakeHeadX = snakeX + defaultDirs[i][0];
+        newSnakeHeadY =snakeY + defaultDirs[i][1];
+        if (validHead(newSnakeHeadX,newSnakeHeadY)){
+          d = distance([newSnakeHeadX,newSnakeHeadY],[foodX,foodY]);
+
+          if(d < min){
+            min = d;
+            minDirection = i;
+          }
         }
       }
 
-      for(let i = 0; i < neighbors.length; i++){
-        d = distance(neighbors[i],[foodX,foodY]);
-        if (d < min){
-          min = d;
-          minNeigbor = i;
-        }
-      }
-
-
-      directionDiffs = [[-20,0],[20,0],[0,-20],[0,20]];
-
-      return directionDiffs[minNeigbor];
+      return defaultDirs[minDirection];
     }
 
