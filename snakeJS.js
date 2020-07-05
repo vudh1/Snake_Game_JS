@@ -209,7 +209,11 @@
     }
 
     function distance(coordinate1, coordinate2){
-      return Math.sqrt((coordinate1[0] - coordinate2[0])**2 + (coordinate1[1] - coordinate2[1])**2);
+      inDistanceX = Math.abs(coordinate1[0] - coordinate2[0]);
+      inDistanceY = Math.abs(coordinate1[1] - coordinate2[1]);
+      outDistanceX = 800 - inDistanceX;
+      outDistanceY = 800 - inDistanceY;
+      return Math.min(Math.sqrt((inDistanceX)**2 + (inDistanceY)**2),Math.sqrt((outDistanceX)**2 + (outDistanceY)**2)) ;
     }
 
     function validHead(newSnakeHeadX, newSnakeHeadY){
