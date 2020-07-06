@@ -1,4 +1,4 @@
-    const board_border = 'black';
+ const board_border = 'black';
     const board_background = 'white';
     const snake_col = 'lightblue';
     const snake_border = 'lightblue';
@@ -27,7 +27,7 @@
     // Vertical velocity
     let dy = 0;
 
-    let tempo = 100;
+    let tempo = 80;
 
     // Get the canvas element
     const snakeboard = document.getElementById("snakeboard");
@@ -251,4 +251,3 @@
 
       return defaultDirs[minDirection];
     }
-
