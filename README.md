@@ -1,9 +1,34 @@
-# Snake_Game_JS
+# Snake Game JS
 
-## Description
+A browser-based Snake game with two play styles:
 
-Inspired by the popular Snake Game, I created my own Snake Game applying Finding Path by DFS. My version does not have border, which means the snake can run through the wall and appear on the other side. Every time the snake eats an apple, it increases its length and speed as well. We can control the snake with arrow buttons or the snake will run itself toward the apple.
+- **Autopilot** chooses a safe neighboring cell that moves the snake toward the food using toroidal (wrap-around) distance.
+- **Manual mode** uses the arrow keys and prevents immediate 180-degree reversals.
+
+The board wraps at every edge, so moving off one side brings the snake back on the opposite side.
 
 ## Demo
-![](Snake-Demo.gif)
 
+![Snake demo](Snake-Demo.gif)
+
+## Controls
+
+- Arrow keys — switch to manual mode and steer
+- `A` — toggle autopilot/manual mode
+- `R` — restart
+
+Eating food increases the score, grows the snake, and gradually increases game speed.
+
+## Run
+
+No build step is required. Open `snakegame.html` in a browser.
+
+## Test
+
+The game core is also exported for Node-based tests:
+
+```bash
+npm test
+```
+
+The tests cover edge wrapping, toroidal distance, collision lookup, and autopilot direction selection.
