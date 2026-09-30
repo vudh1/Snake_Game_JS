@@ -1,0 +1,7 @@
+{
+  "name": "snake-game-js",
+  "private": true,
+  "scripts": {
+    "test": "node --check snakeJS.js && node test_snake.js"
+  }
+}
