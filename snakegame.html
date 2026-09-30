@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-  	<title>Daniel - Snake Game</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daniel - Snake Game</title>
+    <link rel="stylesheet" href="snakeCSS.css" />
   </head>
-
   <body>
-    <div id="score">0</div>
-    <canvas id="snakeboard" width="800" height="800"></canvas>
-	<link rel="stylesheet" type="text/css" href="snakeCSS.css">
-	<div style = "position: absolute; left:450px; top:30px">
-	<form>
-	<input type="submit" value = "Refresh">
-	</form>
-	</div>
+    <main class="game">
+      <h1>Snake</h1>
+      <div class="hud">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Mode: <strong id="mode">Autopilot</strong></span>
+      </div>
+      <canvas id="snakeboard" width="800" height="800" aria-label="Snake game board"></canvas>
+      <p class="controls">Arrow keys: manual control · A: toggle autopilot · R: restart</p>
+      <p id="status" class="status" aria-live="polite"></p>
+    </main>
+    <script src="snakeJS.js"></script>
   </body>
-
-  <script type="text/javascript" src="snakeJS.js">
-
-
-  </script>
 </html>
