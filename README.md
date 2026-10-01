@@ -9,7 +9,9 @@ The board wraps at every edge, so moving off one side brings the snake back on t
 
 ## Demo
 
-![Snake demo](Snake-Demo.gif)
+![Snake gameplay demo](Snake-Demo.gif)
+
+*Animated from the current wrap-around autopilot behavior.*
 
 ## Controls
 
